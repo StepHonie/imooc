@@ -13,8 +13,7 @@ app.set('view engine','jade')
 
 //app.use(express.bodyParser())
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(require('body-parser').urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname,'public')))
 app.locals.moment=require('moment')
@@ -37,19 +36,14 @@ app.get('/',function(req,res)
 //detail page
 app.get('/movie/:id',function(req,res)
 {
-  res.render('detail',
-    {
-      title: "imooc 详情页",
-      movie: {
-        doctor: 'sldkjf',
-        country: '美国',
-        title: '机械战警',
-        year: 2014,
-        poster: 'http://img6.gewara.com/cw270h360/images/movie/201608/s_7aa6b357_1563b3b9f81__7e26.jpg',
-        flash: 'http://v.youku.com/v_show/id_XMTY1MDg5MjI5Ng==.html',
-        summary: 'sldjfoethis is the descriptionsldjfoethis is the descriptionsldjfoethis is the descriptionsldjfoethis is the descriptionsldjfoethis is the description'
-      }
-    })
+  var id=req.params.id
+  Movie.findById(id,function(err,movie)
+  {
+      res.render('detail',{
+        title: 'imooc 详情页',
+        movie:movie
+      })
+  })
 })
 
 //admin page
@@ -85,18 +79,22 @@ app.get('/admin/update/:id',function(req,res){
 })
 
 //admin post movie
-  app.post('admin/movie/new',function(req,res){
-  var id=req.body.movie._id
+  app.post('/admin/movie/new',function(req,res){
+  //var id=req.body.movie._id
   var movieObj=req.body.movie
+  var id=movieObj._id
   var _movie
-  if(id!='undefined'){ //
+
+  if(id!==undefined){ //电影存在，此为更新操作
     Movie.findById(id,function(err,movie){
+      console.log("--------",id)
       if(err){console.log(err)}
-      _movie =_.extend(movie,movieObj)
-      _movie.save(function(err,movie){
+      _movie =_.extend(movie,movieObj)//用新改的movieObj改变原来的movie
+      console.log('======='+movieObj)
+      _movie.save(function(err,movie){//保存更改
         if(err){console.log(err)}
+        res.redirect('/movie/'+movie._id) // 
       })
-      res.redirect('/movie/'+movie._id)
     })
   }else{
     _movie=new Movie({
@@ -131,10 +129,11 @@ app.get('/admin/list',function(req,res)
 //list delete page
 app.delete('/admin/list',function(req,res){
   var id=req.query.id
+  console.log(id);
   if(id){
     Movie.remove({_id:id},function(err,movie){
       if(err){console.log(err)}
-      else{res.join({sucess:1})}
+      else{res.json({success: 1})}
     })
   }
 })

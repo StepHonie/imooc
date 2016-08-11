@@ -22,6 +22,14 @@ block content
           .col-sm-10
             input#inputTitle.form-control(type="text",name="movie[language]",value="#{movie.language}")
         .form-group
+          label.col-sm-2.control-label(for="inputPoster") 海报地址
+          .col-sm-10
+            input#inputTitle.form-control(type="text",name="movie[poster]",value="#{movie.poster}")
+        .form-group
+          label.col-sm-2.control-label(for="inputFlash") 片源地址
+          .col-sm-10
+            input#inputTitle.form-control(type="text",name="movie[flash]",value="#{movie.flash}")
+        .form-group
           label.col-sm-2.control-label(for="inputYear") 上映年份
           .col-sm-10
             input#inputTitle.form-control(type="text",name="movie[year]",value="#{movie.year}")
