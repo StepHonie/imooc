@@ -3,7 +3,7 @@ var path=require('path');
 var mongoose=require('mongoose')
 var _=require('underscore')
 var Movie=require('./models/movie')
-var port=process.env.PORT||3000;
+var port=process.env.PORT||3001;
 var app=express();
 
 mongoose.connect('mongodb://localhost/imooc')

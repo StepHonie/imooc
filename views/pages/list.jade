@@ -24,5 +24,6 @@ block content
 								td #{moment(item.meta.updateAt).format('MM/DD/YYY')}
 								td: a(target="_blank",href="../movie/#{item._id}") 查看
 								td: a(target="_blank",href="../admin/update/#{item._id}") 修改
-								td: button.btn.btn-danger.del(type="button",data-id="#{item._id}") 删除
+								td
+									button.btn.btn-danger.del(type="button",data-id="#{item._id}") 删除
 	script(src='/js/admin.js')
